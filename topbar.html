@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>FatK&LAILAI_LevelUP</title>
+        <link rel="icon" href="ico.png">
+        <link rel="stylesheet" href="topbar.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    </head>
+<body>
+<!--Firebase------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.8.1/firebase-app.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.8.1/firebase-analytics.js";
+        const firebaseConfig = {
+            apiKey: "AIzaSyDhjqsFWt7iKxnHlghBWQ9iXJxDTJ7aCkM",
+            authDomain: "fir-2022-32ba3.firebaseapp.com",
+            projectId: "fir-2022-32ba3",
+            storageBucket: "fir-2022-32ba3.appspot.com",
+            messagingSenderId: "836534365410",
+            appId: "1:836534365410:web:2db014936bfdb699e542bb",
+            measurementId: "G-J4GER0PP4M"
+          };
+        const app = initializeApp(firebaseConfig);
+        const analytics = getAnalytics(app);
+        import {getDatabase, ref, set, child, get, update, push, onChildAdded, onChildChanged, onChildRemoved} from "https://www.gstatic.com/firebasejs/9.8.1/firebase-database.js";
+        const db = getDatabase();
+        const dbref = ref(db);
+//<!--Startup FUN
+        function startupload(){
+                get(child(dbref, "User/")).then((snapshot)=>{
+                    document.getElementById("topbarpoint").innerHTML = snapshot.val().LAILAI.point;
+                    document.getElementById("topbarpoint2").innerHTML = snapshot.val().LAILAI.point;
+                });
+        }window.onload = function() {setInterval(startupload, 1000);}
+    
+//<!--每日簽到 FUN
+        var dailyCheck = document.getElementById("dailyCheck");
+        var dailyCheck2 = document.getElementById("dailyCheck2");
+        dailyCheck.addEventListener('click', dailyCheckAction);
+        dailyCheck2.addEventListener('click', dailyCheckAction);
+        var Today=new Date();
+        //alert(Today.getDate());
+        function dailyCheckAction(){
+            const temp = confirm("每日簽到?");
+            if(temp){
+                get(child(dbref, "User/")).then((snapshot)=>{
+                    if(snapshot.val().LAILAI.today!=Today.getDate()){
+                        var tempPoint = snapshot.val().LAILAI.point;
+                        tempPoint = tempPoint + 1;
+                        update(ref(db, "User/"+ "LAILAI"),{
+                            point: tempPoint,
+                            today: Today.getDate()
+                        });
+                        alert("簽到成功.");
+                    }else{
+                        alert("已經簽到.");
+                    }
+                });
+            }else{
+                alert("Cancelled.")
+            }
+        }
+    </script>
+<!--Firebase End------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------->
+    <!-- TOP BAR -->
+    <div id="topbar">
+        <div class="dropdown">
+            <a href="#" class="dropbtn">&nbsp;&nbsp;<button class="btn"><i class="fa fa-bars"></i></button></a>
+            <div class="dropdown-content">
+                <a href="#">📚圖書館</a>
+                <a href="#">積分:<span id="topbarpoint">Loading...</span></a>
+                <a href="timeM.html">🎞️時光膠卷</a>
+                <a href="index.html">🏃返回目錄</a>
+                <a href="#" id="dailyCheck">✍️每日簽到</a>
+            </div>
+        </div>
+        <font color="#F0F0F0" valign="center">
+		<table class="topbarlist" cellpadding="0">
+			<td>❗.重大回顧: 更新積分系統,1124大抽獎,時光膠卷開放中.❗</td>
+			<td>📚圖書館&nbsp;&nbsp;</td>
+			<td>積分:<font size=3 id="topbarpoint2">Loading...</font></td>
+			<td><a href=timeM.html>🎞️時光膠卷</a></td>
+			<td><a href=index.html>🏃返回目錄</a></td>
+			<td><a id="dailyCheck2">✍️每日簽到</a></td>
+		</table>
+        </font>
+    </div>
+    
+    <script src="topbar.js"></script>
+    <!-- TOP BAR END -->
+</body> 
+</html>
