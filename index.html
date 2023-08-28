@@ -121,13 +121,13 @@
   const dbref = ref(db);
 //<!--Startup FUN
   function startupload(){
-            Notification.requestPermission().then((permission) => {
+            /*Notification.requestPermission().then((permission) => {
               if (permission === 'granted') {
                 alert('[瀏覽器已允許通知]');
               }else{
                 alert('[瀏覽器不接受通知]');
               }
-            });
+            });*/
             get(child(dbref, "User/")).then((snapshot)=>{
                 document.getElementById("topbarpoint").innerHTML = snapshot.val().LAILAI.point;
                 document.getElementById("topbarpoint2").innerHTML = snapshot.val().LAILAI.point;
